@@ -26,19 +26,41 @@ import org.thymeleaf.examples.spring6.extrathyme.business.entities.Remark;
 public class RemarkUtil {
 
 
-    public static Remark getRemarkForPosition(final Integer position) {
-        
-        if (position == null) {
-            return null;
+    /*
+     * Based on position, assign the appropriate remark
+     * The team in the first position of the repository will have the
+     * Remark.WORLD_CHAMPIONS_LEAGUE, the second and third teams will have the
+     * Remark.CONTINENTAL_PLAYOFFS, the teams not in the final position will
+     * have the Remark.AUDIENCE, while the last team has the Remark.RELEGATION.
+     */
+    public static Remark GetRemark(Integer position, Integer intLastPosition)
+    {
+        Remark remark = null;
+
+        // The first "if" is deliberately kept empty, the remark variable remains
+        // null in those cases.
+        //noinspection StatementWithEmptyBody
+        if (position == null)
+        {
         }
-        switch (position.intValue()) {
-            case 1: return Remark.WORLD_CHAMPIONS_LEAGUE;
-            case 2:
-            case 3: return Remark.CONTINENTAL_PLAYOFFS;
-            case 10: return Remark.RELEGATION;
+        else if (position == 1)
+        {
+            remark = Remark.WORLD_CHAMPIONS_LEAGUE;
         }
-        return null;
-        
+        else if (position == 2 || position == 3)
+        {
+            remark = Remark.CONTINENTAL_PLAYOFFS;
+        }
+        else if (position.equals(intLastPosition))
+        {
+            remark = Remark.RELEGATION;
+        }
+        else
+        {
+            remark = Remark.AUDIENCE;
+        }
+
+        return remark;
     }
     
 
