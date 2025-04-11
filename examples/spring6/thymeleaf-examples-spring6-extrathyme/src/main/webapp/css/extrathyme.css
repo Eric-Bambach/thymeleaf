@@ -81,6 +81,10 @@ tr.cpo {
   background-color: #dfd;
 }
 
+tr.aud {
+  background-color: #f6f3c1;
+}
+
 tr.rel {
   background-color: #fdd;
 }
