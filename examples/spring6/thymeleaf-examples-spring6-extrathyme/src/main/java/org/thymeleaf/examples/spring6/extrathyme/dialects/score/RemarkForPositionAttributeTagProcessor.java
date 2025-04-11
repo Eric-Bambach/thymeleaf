@@ -33,14 +33,13 @@ import org.thymeleaf.standard.expression.StandardExpressions;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.unbescape.html.HtmlEscape;
 
-
 public class RemarkForPositionAttributeTagProcessor extends AbstractAttributeTagProcessor {
 
     private static final String ATTR_NAME = "remarkforposition";
     private static final int PRECEDENCE = 12000;
+    private Integer intLastPosition = null;
 
-
-    public RemarkForPositionAttributeTagProcessor(final String dialectPrefix) {
+    public RemarkForPositionAttributeTagProcessor(final String dialectPrefix, Integer intLastPosition) {
         super(
             TemplateMode.HTML, // This processor will apply only to HTML mode
             dialectPrefix,     // Prefix to be applied to name for matching
@@ -50,6 +49,7 @@ public class RemarkForPositionAttributeTagProcessor extends AbstractAttributeTag
             true,              // Apply dialect prefix to attribute name
             PRECEDENCE,        // Precedence (inside dialect's precedence)
             true);             // Remove the matched attribute afterwards
+        this.intLastPosition = intLastPosition;
     }
 
 
@@ -81,8 +81,8 @@ public class RemarkForPositionAttributeTagProcessor extends AbstractAttributeTag
         /*
          * Obtain the remark corresponding to this position in the league table
          */
-        final Remark remark = RemarkUtil.getRemarkForPosition(position);
-        
+        final Remark remark = RemarkUtil.GetRemark(position, intLastPosition);
+
         /*
          * If no remark is to be applied, just set an empty body to this tag
          */
@@ -111,5 +111,4 @@ public class RemarkForPositionAttributeTagProcessor extends AbstractAttributeTag
         structureHandler.setBody(HtmlEscape.escapeHtml5(i18nMessage), false);
         
     }
-
 }
