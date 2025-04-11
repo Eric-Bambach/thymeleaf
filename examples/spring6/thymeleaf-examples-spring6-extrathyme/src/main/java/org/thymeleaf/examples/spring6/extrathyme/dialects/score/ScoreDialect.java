@@ -20,9 +20,12 @@
 package org.thymeleaf.examples.spring6.extrathyme.dialects.score;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.thymeleaf.dialect.AbstractProcessorDialect;
+import org.thymeleaf.examples.spring6.extrathyme.business.entities.Team;
+import org.thymeleaf.examples.spring6.extrathyme.business.entities.repositories.TeamRepository;
 import org.thymeleaf.processor.IProcessor;
 import org.thymeleaf.standard.StandardDialect;
 import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor;
@@ -46,13 +49,38 @@ public class ScoreDialect extends AbstractProcessorDialect {
      */
     public Set<IProcessor> getProcessors(final String dialectPrefix) {
         final Set<IProcessor> processors = new HashSet<IProcessor>();
-        processors.add(new ClassForPositionAttributeTagProcessor(dialectPrefix));
-        processors.add(new RemarkForPositionAttributeTagProcessor(dialectPrefix));
+
+        /* The original project had hardcoded switch statements to handle remarks
+        * and the relevant css.
+        * This calls to a procedure to find the last team listed in the mock
+        * repository to dynamically handle that team.
+        */
+        Integer intLastPosition = 0;
+        intLastPosition = GetLastPosition();
+
+        processors.add(new ClassForPositionAttributeTagProcessor(dialectPrefix, intLastPosition));
+        processors.add(new RemarkForPositionAttributeTagProcessor(dialectPrefix, intLastPosition));
         processors.add(new HeadlinesElementTagProcessor(dialectPrefix));
         processors.add(new MatchDayTodayModelProcessor(dialectPrefix));
         // This will remove the xmlns:score attributes we might add for IDE validation
         processors.add(new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix));
         return processors;
+    }
+
+    /*
+     * Using a List, find the last position
+     */
+    private Integer GetLastPosition()
+    {
+        List<Team> Teams = new TeamRepository().findAllTeams();
+        Integer intlastPosition = 0;
+
+        for(Team team : Teams)
+        {
+            intlastPosition++;
+        }
+
+        return intlastPosition;
     }
 
 

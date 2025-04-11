@@ -32,14 +32,13 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.examples.spring6.extrathyme.business.entities.Remark;
 import org.thymeleaf.examples.spring6.extrathyme.business.util.RemarkUtil;
 
-
 public class ClassForPositionAttributeTagProcessor extends AbstractAttributeTagProcessor {
 
     private static final String ATTR_NAME = "classforposition";
     private static final int PRECEDENCE = 10000;
+    private Integer intLastPosition = null;
 
-
-    public ClassForPositionAttributeTagProcessor(final String dialectPrefix) {
+    public ClassForPositionAttributeTagProcessor(final String dialectPrefix, Integer intLastPosition) {
         super(
             TemplateMode.HTML, // This processor will apply only to HTML mode
             dialectPrefix,     // Prefix to be applied to name for matching
@@ -49,6 +48,7 @@ public class ClassForPositionAttributeTagProcessor extends AbstractAttributeTagP
             true,              // Apply dialect prefix to attribute name
             PRECEDENCE,        // Precedence (inside dialect's own precedence)
             true);             // Remove the matched attribute afterwards
+        this.intLastPosition = intLastPosition;
     }
 
 
@@ -79,16 +79,18 @@ public class ClassForPositionAttributeTagProcessor extends AbstractAttributeTagP
         /*
          * Obtain the remark corresponding to this position in the league table.
          */
-        final Remark remark = RemarkUtil.getRemarkForPosition(position);
+        final Remark remark = RemarkUtil.GetRemark(position, intLastPosition);
 
         /*
-         * Select the adequate CSS class for the element.
+         * Select the appropriate CSS class for the element.
          */
         final String newValue;
         if (remark == Remark.WORLD_CHAMPIONS_LEAGUE) {
             newValue = "wcl";
         } else if (remark == Remark.CONTINENTAL_PLAYOFFS) {
             newValue = "cpo";
+        } else if(remark == Remark.AUDIENCE){
+            newValue = "aud";
         } else if (remark == Remark.RELEGATION) {
             newValue = "rel";
         } else {
@@ -107,6 +109,4 @@ public class ClassForPositionAttributeTagProcessor extends AbstractAttributeTagP
         }
 
     }
-
-
 }
