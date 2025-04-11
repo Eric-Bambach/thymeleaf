@@ -25,6 +25,7 @@ public enum Remark {
 
     WORLD_CHAMPIONS_LEAGUE,
     CONTINENTAL_PLAYOFFS,
+    AUDIENCE,
     RELEGATION
     
 }
