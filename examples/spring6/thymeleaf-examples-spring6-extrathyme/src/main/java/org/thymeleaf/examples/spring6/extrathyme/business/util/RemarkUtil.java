@@ -47,18 +47,27 @@ public class RemarkUtil {
         {
             remark = Remark.WORLD_CHAMPIONS_LEAGUE;
         }
-        else if (position == 2 || position == 3)
+        /*
+        * If a team has been determined to not be in the first position, and
+        * is also determined to not be in the last position, check if the team
+        * is in either the second or third positions.
+        */
+        else if(!position.equals(intLastPosition))
         {
+            if (position == 2 || position == 3)
+            {
             remark = Remark.CONTINENTAL_PLAYOFFS;
-        }
-        else if (position.equals(intLastPosition))
-        {
-            remark = Remark.RELEGATION;
+            }
+            else
+            {
+                remark = Remark.AUDIENCE;
+            }
         }
         else
         {
-            remark = Remark.AUDIENCE;
+            remark = Remark.RELEGATION;
         }
+
 
         return remark;
     }
