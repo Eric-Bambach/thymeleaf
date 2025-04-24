@@ -65,7 +65,7 @@
         <fieldset>
           
           <legend th:text="#{seedstarter.data}">Seed Starter Data</legend>
-
+          <span th:if="${errorMessage}"  th:text="${errorMessage}" class="error"></span>
           <ul th:if="${#fields.hasErrors('*')}" class="errorlist">
             <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
           </ul>
