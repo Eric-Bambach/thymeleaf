@@ -93,7 +93,19 @@ public class SeedStarterMngController {
         if (bindingResult.hasErrors()) {
             return "seedstartermng";
         }
-        this.seedStarterService.add(seedStarter);
+        // The original project allowed for the user to submit a SeedStarter with no seeds in it,
+        // this catches that and produces an error message both in the console and in the view
+        if (seedStarter.getRows().isEmpty() || seedStarter.getRows().toString().contains("null"))
+        {
+            model.addAttribute("errorMessage","There are currently no seeds in the SeedStarter.");
+            System.out.println("There were no seeds in the SeedStarter.");
+            return "seedstartermng";
+        }
+        else
+        {
+            System.out.println(seedStarter);
+            this.seedStarterService.add(seedStarter);
+        }
         model.clear();
         return "redirect:/seedstartermng";
     }
